@@ -11,7 +11,7 @@ namespace Yape.Sdk
     public interface IYapeApi
     {
         [Get("/identity/login/start")]
-        Task LoginStart();
+        Task<BaseResult> LoginStart();
         [Get("/api/keyboard")]
         Task<Keyboard> KeyBoard();
         [Post("/api-mobile/public/identity/login/unlock")]
