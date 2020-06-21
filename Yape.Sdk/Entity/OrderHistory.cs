@@ -2,7 +2,7 @@
 
 namespace Yape.Sdk.Entity
 {
-    public class PaymentHistory
+    public class OrderHistory
     {
         [JsonPropertyName("success")]
         public bool Success { get; set; }
