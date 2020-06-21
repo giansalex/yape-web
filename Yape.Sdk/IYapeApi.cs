@@ -19,8 +19,10 @@ namespace Yape.Sdk
         [Get("/api-mobile/payments")]
         Task<OrderHistory> Orders();
         [Post("/api-mobile/payments")]
-        Task<OrderResult> Order(Order order);
-        [Delete("api-mobile/payments/{orderId}")]
+        Task<OrderResult> CreateOrder(Order order);
+        [Get("/api-mobile/payments/{orderId}")]
+        Task<OrderResult> Order(int orderId);
+        [Delete("/api-mobile/payments/{orderId}")]
         Task<OrderResult> UndoOrder(int orderId);
         [Post("/api-mobile/transfers/targetUserData")]
         Task<Customer> Customer(CustomerPhone phone);
