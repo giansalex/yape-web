@@ -4,6 +4,10 @@ using Yape.Sdk.Entity;
 
 namespace Yape.Sdk
 {
+    [Headers(
+        "x-channel: 1",
+        "User-Agent: Dalvik/2.1.0 (Linux; U; Android 6.0; AX681 Build/MRA58K)"
+    )]
     public interface IYapeApi
     {
         [Get("/identity/login/start")]
