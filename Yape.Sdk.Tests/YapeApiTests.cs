@@ -48,9 +48,10 @@ namespace Yape.Sdk.Tests
 
         [Test]
         [TestCaseSource(nameof(_yapeData))]
-        public async Task GetBalanceTest(string id, string username, string pinPass)
+        public async Task CompleteTest(string id, string username, string pinPass)
         {
-            await _api.LoginStart();
+            var result = await _api.LoginStart();
+            Assert.True(result.Success);
             var keyboard = await _api.KeyBoard();
             Assert.True(keyboard.Success);
             var pinText = PinEncrypt.GetPinHash(keyboard.Response, pinPass.Select(c => c.ToString()).ToArray());
@@ -64,12 +65,48 @@ namespace Yape.Sdk.Tests
 
             _token = identity.Response.AuthToken.AccessToken;
 
+            var history = await _api.History("0/0/7");
+            Assert.True(history.Success);
+            foreach (var entity in history.Response.Entities)
+            {
+                var date = DateTimeOffset.FromUnixTimeSeconds(entity.Time / 1000)
+                    .DateTime.ToLocalTime();
+                var isOut = entity.Type == "OUT";
+                var line = $"Date: {date:dd/MM/yyyy} {(isOut ? "To: " + entity.ContactTo.DisplayName : "From: " + entity.ContactFrom.DisplayName)} - Amount: S/ {entity.Amount:F2} | {entity.Message}";
+                await TestContext.Out.WriteLineAsync(line);
+            }
+
             var balance = await _api.Balance();
             Assert.True(balance.Success);
             var saldo = decimal.Parse(balance.Response.Amount);
 
             await TestContext.Out.WriteLineAsync($"Saldo S/.{saldo:F2}");
-            Assert.Greater(saldo, 1);
+
+            var customer = await _api.Customer(new CustomerPhone {Cashtag = "943320216"});
+            Assert.IsTrue(customer.Success);
+
+            await TestContext.Out.WriteLineAsync("Cliente: " + customer.Response.Name);
+
+            var order = await _api.CreateOrder(new Order
+            {
+                Amount = "5.00",
+                CashTag = "947392421",
+                Message = "#4444"
+            });
+            Assert.True(order.Success);
+            await TestContext.Out.WriteLineAsync($"Payment: {order.Response.Id} | Status: {order.Response.Status}");
+
+            var orders = await _api.Orders();
+            Assert.True(orders.Success);
+
+            foreach (var payment in orders.Response)
+            {
+                var line = $"Name: {payment.Name} , Amount: {payment.Amount:F2} , Status: {payment.Status}";
+                await TestContext.Out.WriteLineAsync(line);
+            }
+
+            result = await _api.UndoOrder(order.Response.Id);
+            Assert.True(result.Success);
         }
 
         private static object[] _yapeData =
