@@ -14,12 +14,14 @@ namespace Yape.Sdk
         Task<Identity> Login(UserLogin login);
         [Post("/customers/v2/balance")]
         Task<Balance> Balance();
-        [Get("/transfers/v2/history/0/0/7")]
-        Task<History> History();
+        [Get("/transfers/v2/history/{**filter}")]
+        Task<History> History(string filter);
         [Get("/api-mobile/payments")]
         Task<OrderHistory> Orders();
         [Post("/api-mobile/payments")]
         Task<OrderResult> Order(Order order);
+        [Delete("api-mobile/payments/{orderId}")]
+        Task<OrderResult> UndoOrder(int orderId);
         [Post("/api-mobile/transfers/targetUserData")]
         Task<Customer> Customer(CustomerPhone phone);
     }

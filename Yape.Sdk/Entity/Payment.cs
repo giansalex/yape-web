@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace Yape.Sdk.Entity
 {
@@ -14,10 +11,10 @@ namespace Yape.Sdk.Entity
         public string Message { get; set; }
 
         [JsonPropertyName("amount")]
-        public long Amount { get; set; }
+        public decimal Amount { get; set; }
 
         [JsonPropertyName("id")]
-        public long Id { get; set; }
+        public int Id { get; set; }
 
         [JsonPropertyName("name")]
         public string Name { get; set; }
