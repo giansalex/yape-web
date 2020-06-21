@@ -2,13 +2,10 @@
 
 namespace Yape.Sdk.Entity
 {
-    public class OrderResult
+    public class BaseResult
     {
         [JsonPropertyName("success")]
         public bool Success { get; set; }
-
-        [JsonPropertyName("response")]
-        public Payment Response { get; set; }
 
         [JsonPropertyName("errors")]
         public object[] Errors { get; set; }

@@ -33,7 +33,7 @@ namespace Yape.Sdk
         Task<OrderResult> Order(int orderId);
         [Headers("Authorization: Bearer")]
         [Delete("/api-mobile/payments/{orderId}")]
-        Task<OrderResult> UndoOrder(int orderId);
+        Task<BaseResult> UndoOrder(int orderId);
         [Headers("Authorization: Bearer")]
         [Post("/api-mobile/transfers/targetUserData")]
         Task<Customer> Customer(CustomerPhone phone);
