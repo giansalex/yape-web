@@ -23,19 +23,16 @@ namespace Yape.Sdk.Entity
         public HistoryItem[] Entities { get; set; }
 
         [JsonPropertyName("size")]
-        public long Size { get; set; }
+        public int Size { get; set; }
 
         [JsonPropertyName("limit")]
-        public long Limit { get; set; }
+        public int Limit { get; set; }
 
         [JsonPropertyName("offset")]
-        public long Offset { get; set; }
+        public int Offset { get; set; }
 
         [JsonPropertyName("pageNumber")]
-        public long PageNumber { get; set; }
-
-        [JsonPropertyName("previous")]
-        public object Previous { get; set; }
+        public int PageNumber { get; set; }
     }
 
     public partial class HistoryItem
@@ -44,7 +41,7 @@ namespace Yape.Sdk.Entity
         public long Time { get; set; }
 
         [JsonPropertyName("amount")]
-        public long Amount { get; set; }
+        public decimal Amount { get; set; }
 
         [JsonPropertyName("contactFrom")]
         public Contact ContactFrom { get; set; }
@@ -56,10 +53,10 @@ namespace Yape.Sdk.Entity
         public string Type { get; set; }
 
         [JsonPropertyName("year")]
-        public long Year { get; set; }
+        public int Year { get; set; }
 
         [JsonPropertyName("month")]
-        public long Month { get; set; }
+        public int Month { get; set; }
 
         [JsonPropertyName("bonus")]
         public bool Bonus { get; set; }
@@ -77,7 +74,7 @@ namespace Yape.Sdk.Entity
         public string Cashtag { get; set; }
 
         [JsonPropertyName("phoneNumber")]
-        public object PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
 
         [JsonPropertyName("name")]
         public string Name { get; set; }
