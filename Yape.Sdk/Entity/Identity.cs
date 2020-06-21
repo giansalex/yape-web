@@ -54,13 +54,13 @@ namespace Yape.Sdk.Entity
     public partial class AuthToken
     {
         [JsonPropertyName("access_token")]
-        public Guid AccessToken { get; set; }
+        public string AccessToken { get; set; }
 
         [JsonPropertyName("token_type")]
         public string TokenType { get; set; }
 
         [JsonPropertyName("refresh_token")]
-        public Guid RefreshToken { get; set; }
+        public string RefreshToken { get; set; }
 
         [JsonPropertyName("expires_in")]
         public long ExpiresIn { get; set; }
