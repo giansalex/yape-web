@@ -77,6 +77,11 @@ namespace Yape.Sdk
 
         private async Task VerifyLogin()
         {
+            if (!string.IsNullOrEmpty(TokenSaved) && DateTime.Now < _expire)
+            {
+                return;
+            }
+
             var result = await _api.LoginStart();
             if (!result.Success) throw new Exception("Cannot login for user " + Email);
 
