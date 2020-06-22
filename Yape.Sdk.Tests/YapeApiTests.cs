@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -13,19 +12,6 @@ namespace Yape.Sdk.Tests
     [Category("MANUAL")]
     public class YapeApiTests
     {
-        private static Dictionary<string, string> _pines = new Dictionary<string, string>
-        {
-            {"0", "de98e1c36667"},
-            {"1", "df99e0c26766"},
-            {"2", "dc9ae3c16465"},
-            {"3", "dd9be2c06564"},
-            {"4", "da9ce5c76263"},
-            {"5", "db9de4c66362"},
-            {"6", "d89ee7c56061"},
-            {"7", "d99fe6c46160"},
-            {"8", "d690e9cb6e6f"},
-            {"9", "d791e8ca6f6e"}
-        };
         private IYapeApi _api;
         private string _token;
 
