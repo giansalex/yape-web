@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Yape.Sdk
 {
-    public static class PinEncrypt
+    public class PinEncrypt : IPinResolver
     {
         private static Dictionary<string, string> _pines = new Dictionary<string, string>
         {
@@ -19,7 +20,7 @@ namespace Yape.Sdk
             {"9", "d791e8ca6f6e"}
         };
 
-        public static string GetPinHash(string[] keyboard, string[] pinPassword)
+        public Task<string> GetPinText(string[] keyboard, string[] pinPassword)
         {
             var indexKeys = new Queue<string>();
             foreach (var item in pinPassword)
@@ -36,7 +37,7 @@ namespace Yape.Sdk
                 init += 2;
             }
 
-            return pinText;
+            return Task.FromResult(pinText);
         }
     }
 }
