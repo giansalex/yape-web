@@ -40,7 +40,8 @@ namespace Yape.Sdk.Tests
             Assert.True(result.Success);
             var keyboard = await _api.KeyBoard();
             Assert.True(keyboard.Success);
-            var pinText = PinEncrypt.GetPinHash(keyboard.Response, pinPass.Select(c => c.ToString()).ToArray());
+            var encryptor = new PinEncrypt();
+            var pinText = await encryptor.GetPinText(keyboard.Response, pinPass.Select(c => c.ToString()).ToArray());
             var identity = await _api.Login(new UserLogin
             {
                 PinText = new []{ pinText},
