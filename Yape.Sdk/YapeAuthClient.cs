@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Yape.Sdk.Entity;
+using Yape.Sdk.Exceptions;
 
 namespace Yape.Sdk
 {
@@ -76,10 +78,10 @@ namespace Yape.Sdk
         private async Task VerifyLogin()
         {
             var result = await _api.LoginStart();
-            if (!result.Success) return;
+            if (!result.Success) throw new Exception("Cannot login for user " + Email);
 
             var keyboard = await _api.KeyBoard();
-            if (!keyboard.Success) return;
+            if (!keyboard.Success) throw new Exception("Cannot login for user " + Email);
 
             var pinText = await _pinResolver.GetPinText(keyboard.Response, _pinArray);
             var login = await _api.Login(new UserLogin
@@ -89,7 +91,7 @@ namespace Yape.Sdk
                 PinText = new[] {pinText}
             });
 
-            if (!login.Success) return;
+            if (!login.Success) throw new Exception("Cannot login for user " + Email);
 
             TokenSaved = login.Response.AuthToken.AccessToken;
         }
