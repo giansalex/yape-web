@@ -21,7 +21,7 @@ namespace Yape.Sdk
         Task<Balance> Balance();
         [Headers("Authorization: Bearer")]
         [Get("/transfers/v2/history/{**filter}")]
-        Task<History> History(string filter);
+        Task<HistoryResponse> History(string filter);
         [Headers("Authorization: Bearer")]
         [Get("/api-mobile/payments")]
         Task<OrderHistory> Orders();

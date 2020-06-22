@@ -1,23 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace Yape.Sdk.Entity
 {
-    public partial class History
+    public partial class HistoryResponse
     {
         [JsonPropertyName("success")]
         public bool Success { get; set; }
 
         [JsonPropertyName("response")]
-        public HistoryResponse Response { get; set; }
+        public History Response { get; set; }
 
         [JsonPropertyName("errors")]
         public object[] Errors { get; set; }
     }
 
-    public partial class HistoryResponse
+    public partial class History
     {
         [JsonPropertyName("entities")]
         public HistoryItem[] Entities { get; set; }
