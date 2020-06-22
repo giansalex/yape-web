@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Yape.Sdk.Entity;
-using Yape.Sdk.Exceptions;
 
 namespace Yape.Sdk
 {
@@ -12,6 +11,7 @@ namespace Yape.Sdk
         private readonly IYapeApi _api;
         private readonly IPinResolver _pinResolver;
         private string[] _pinArray;
+        private static DateTime _expire;
 
         public string UserId { get; set; }
         public string Email { get; set; }
@@ -93,6 +93,7 @@ namespace Yape.Sdk
 
             if (!login.Success) throw new Exception("Cannot login for user " + Email);
 
+            _expire = DateTime.Now.AddSeconds(login.Response.AuthToken.ExpiresIn * 0.8);
             TokenSaved = login.Response.AuthToken.AccessToken;
         }
     }
