@@ -59,11 +59,11 @@ namespace Yape.Sdk
             return await _client.CreateOrder(order);
         }
 
-        public async Task<Payment> GetOrder(int order)
+        public async Task<Payment> GetOrder(int orderId)
         {
             await VerifyLogin();
 
-            return await _client.GetOrder(order);
+            return await _client.GetOrder(orderId);
         }
 
         public async Task<bool> DeleteOrder(int order)

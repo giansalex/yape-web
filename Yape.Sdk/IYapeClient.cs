@@ -13,7 +13,7 @@ namespace Yape.Sdk
 
         Task<Payment> CreateOrder(Order order);
 
-        Task<Payment> GetOrder(int order);
+        Task<Payment> GetOrder(int orderId);
 
         Task<bool> DeleteOrder(int order);
     }

@@ -40,9 +40,9 @@ namespace Yape.Sdk
             return result.Success ? result.Response : null;
         }
 
-        public async Task<Payment> GetOrder(int order)
+        public async Task<Payment> GetOrder(int orderId)
         {
-            var result = await _api.Order(order);
+            var result = await _api.Order(orderId);
 
             return result.Success ? result.Response : null;
         }
