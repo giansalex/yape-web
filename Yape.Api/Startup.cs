@@ -1,6 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -30,12 +31,20 @@ namespace Yape.Api
             services.AddTransient<IPinResolver, PinEncrypt>();
             services.AddTransient<ITokenStore, MemoryTokenStore>();
             services.AddTransient<YapeClient>();
-            services.AddTransient<IYapeClient, YapeAuthClient>(s => new YapeAuthClient(
-                s.GetService<YapeClient>(),
-                s.GetService<IYapeApi>(),
-                s.GetService<IPinResolver>(),
-                s.GetService<ITokenStore>()
-            ));
+            services.AddTransient<IYapeClient, YapeAuthClient>(s =>
+            {
+                var settings = s.GetService<IOptions<YapeSettings>>().Value;
+                return new YapeAuthClient(
+                    s.GetService<YapeClient>(),
+                    s.GetService<IYapeApi>(),
+                    s.GetService<IPinResolver>(),
+                    s.GetService<ITokenStore>())
+                {
+                    UserId = settings.UserId,
+                    Email = settings.Email,
+                    Pin = settings.Pin
+                };
+            });
             services.AddTransient<SecurityHttpClientHandler>();
             services.AddRefitClient<IYapeApi>(new RefitSettings(new SystemTextJsonContentSerializer()))
                 .ConfigureHttpClient((s, c) => c.BaseAddress = new Uri(s.GetService<IOptions<YapeSettings>>().Value.Endpoint))
@@ -65,6 +74,10 @@ namespace Yape.Api
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapGet("/", async context =>
+                {
+                    await context.Response.WriteAsync("API ready!");
+                });
                 endpoints.MapControllers();
             });
         }
