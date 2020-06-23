@@ -19,8 +19,8 @@ namespace Yape.Sdk.Tests
         [SetUp]
         public void Setup()
         {
-            var moq = new Mock<ITokenProvider>();
-            moq.Setup(m => m.GetToken()).ReturnsAsync(() => _token);
+            var moq = new Mock<ITokenStore>();
+            moq.Setup(m => m.Get()).ReturnsAsync(() => _token);
             var handler = new HttpClientHandler
             {
                 CookieContainer = new CookieContainer(), UseCookies = true

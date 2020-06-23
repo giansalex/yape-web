@@ -10,7 +10,7 @@ namespace Yape.Sdk
 {
     public class SecurityHttpClientHandler : DelegatingHandler
     {
-        private readonly ITokenProvider _provider;
+        private readonly ITokenStore _provider;
         private static Dictionary<string, string> _headers = new Dictionary<string, string>();
         private static Dictionary<string, string> _mapAuth = new Dictionary<string, string>
         {
@@ -31,7 +31,12 @@ namespace Yape.Sdk
             {"MTY=", "MzAzOA=="}
         };
 
-        public SecurityHttpClientHandler(ITokenProvider provider)
+        public SecurityHttpClientHandler(ITokenStore provider)
+        {
+            _provider = provider;
+        }
+
+        public SecurityHttpClientHandler(ITokenStore provider, HttpMessageHandler handler) : base(handler)
         {
             _provider = provider;
         }
