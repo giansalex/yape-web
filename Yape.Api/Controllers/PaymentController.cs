@@ -43,9 +43,16 @@ namespace Yape.Api.Controllers
                 return BadRequest(ModelState);
             }
 
+            var customer = await _yape.GetCustomer(intent.Phone);
+            if (customer == null)
+            {
+                ModelState.AddModelError("Phone", "Customer not found");
+                return BadRequest(ModelState);
+            }
+
             var result = await _yape.CreateOrder(new Order
             {
-                CashTag = intent.Phone,
+                CashTag = customer.Cashtag,
                 Amount = intent.Amount.ToString("F2"),
                 Message = $"Paga tu pedido #{new Random().Next(1, 100)} Prueba"
             });
