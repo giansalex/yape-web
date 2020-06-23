@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Yape.Sdk;
 
 namespace Yape.Api
 {
@@ -26,6 +27,13 @@ namespace Yape.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddTransient<IPinResolver, PinEncrypt>();
+            services.AddTransient<YapeClient>();
+            services.AddTransient<IYapeClient, YapeAuthClient>(s => new YapeAuthClient(
+                s.GetService<YapeClient>(),
+                s.GetService<IYapeApi>(),
+                s.GetService<IPinResolver>()
+            ));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
