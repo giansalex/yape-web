@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace Yape.Sdk
 {
-    public class SecurityHttpClientHandler : HttpClientHandler
+    public class SecurityHttpClientHandler : DelegatingHandler
     {
+        private readonly ITokenProvider _provider;
         private static Dictionary<string, string> _headers = new Dictionary<string, string>();
         private static Dictionary<string, string> _mapAuth = new Dictionary<string, string>
         {
@@ -30,11 +31,9 @@ namespace Yape.Sdk
             {"MTY=", "MzAzOA=="}
         };
 
-        private readonly Func<Task<string>> _getToken;
-
-        public SecurityHttpClientHandler(Func<Task<string>> getToken)
+        public SecurityHttpClientHandler(ITokenProvider provider)
         {
-            _getToken = getToken ?? throw new ArgumentNullException(nameof(getToken));
+            _provider = provider;
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -42,7 +41,7 @@ namespace Yape.Sdk
             var auth = request.Headers.Authorization;
             if (auth != null)
             {
-                var token = await _getToken().ConfigureAwait(false);
+                var token = await _provider.GetToken().ConfigureAwait(false);
                 request.Headers.Authorization = new AuthenticationHeaderValue(auth.Scheme, token);
             }
 
