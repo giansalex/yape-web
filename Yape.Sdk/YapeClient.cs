@@ -53,5 +53,15 @@ namespace Yape.Sdk
 
             return result.Success;
         }
+
+        public async Task<Customer> GetCustomer(string phone)
+        {
+            var result = await _api.Customer(new CustomerPhone
+            {
+                Cashtag = phone
+            });
+
+            return result.Success ? result.Response : null;
+        }
     }
 }

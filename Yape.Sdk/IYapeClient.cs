@@ -16,5 +16,7 @@ namespace Yape.Sdk
         Task<Payment> GetOrder(int orderId);
 
         Task<bool> DeleteOrder(int order);
+
+        Task<Customer> GetCustomer(string phone);
     }
 }

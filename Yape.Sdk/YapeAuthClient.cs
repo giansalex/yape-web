@@ -72,6 +72,13 @@ namespace Yape.Sdk
             return await _client.DeleteOrder(order);
         }
 
+        public async Task<Customer> GetCustomer(string phone)
+        {
+            await VerifyLogin();
+
+            return await _client.GetCustomer(phone);
+        }
+
         private async Task VerifyLogin()
         {
             var token = await _store.Get();
