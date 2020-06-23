@@ -46,7 +46,7 @@ namespace Yape.Sdk
             var auth = request.Headers.Authorization;
             if (auth != null)
             {
-                var token = await _provider.GetToken().ConfigureAwait(false);
+                var token = await _provider.Get().ConfigureAwait(false);
                 request.Headers.Authorization = new AuthenticationHeaderValue(auth.Scheme, token);
             }
 
