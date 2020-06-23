@@ -22,6 +22,10 @@ namespace Yape.Api.Controllers
         public async Task<IActionResult> Get(int id)
         {
             var result = await _yape.GetOrder(id);
+            if (result == null)
+            {
+                return NotFound();
+            }
             
             return Ok(new
             {
@@ -45,6 +49,11 @@ namespace Yape.Api.Controllers
                 Amount = intent.Amount.ToString("F2"),
                 Message = $"Paga tu pedido #{new Random().Next(1, 100)} Prueba"
             });
+
+            if (result == null)
+            {
+                return Ok(new { Error = true });
+            }
 
             return Ok(new
             {
