@@ -1,15 +1,14 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Polly;
+using Refit;
+using Yape.Api.Models;
+using Yape.Api.Services;
 using Yape.Sdk;
 
 namespace Yape.Api
@@ -27,13 +26,27 @@ namespace Yape.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.Configure<YapeSettings>(Configuration.GetSection("Yape"));
             services.AddTransient<IPinResolver, PinEncrypt>();
+            services.AddTransient<ITokenStore, MemoryTokenStore>();
             services.AddTransient<YapeClient>();
             services.AddTransient<IYapeClient, YapeAuthClient>(s => new YapeAuthClient(
                 s.GetService<YapeClient>(),
                 s.GetService<IYapeApi>(),
-                s.GetService<IPinResolver>()
+                s.GetService<IPinResolver>(),
+                s.GetService<ITokenStore>()
             ));
+            services.AddTransient<SecurityHttpClientHandler>();
+            services.AddRefitClient<IYapeApi>(new RefitSettings(new SystemTextJsonContentSerializer()))
+                .ConfigureHttpClient((s, c) => c.BaseAddress = new Uri(s.GetService<IOptions<YapeSettings>>().Value.Endpoint))
+                .AddHttpMessageHandler<SecurityHttpClientHandler>()
+                .AddTransientHttpErrorPolicy(p => 
+                    p.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(600)));
+
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = Configuration["Redis:Connection"];
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
