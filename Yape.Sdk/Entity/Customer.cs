@@ -2,19 +2,19 @@
 
 namespace Yape.Sdk.Entity
 {
-    public partial class Customer
+    public partial class CustomerResult
     {
         [JsonPropertyName("success")]
         public bool Success { get; set; }
 
         [JsonPropertyName("response")]
-        public CustomerResponse Response { get; set; }
+        public Customer Response { get; set; }
 
         [JsonPropertyName("errors")]
-        public object[] Errors { get; set; }
+        public string[] Errors { get; set; }
     }
 
-    public partial class CustomerResponse
+    public partial class Customer
     {
         [JsonPropertyName("cashtag")]
         public string Cashtag { get; set; }

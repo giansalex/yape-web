@@ -36,6 +36,6 @@ namespace Yape.Sdk
         Task<BaseResult> UndoOrder(int orderId);
         [Headers("Authorization: Bearer")]
         [Post("/api-mobile/transfers/targetUserData")]
-        Task<Customer> Customer(CustomerPhone phone);
+        Task<CustomerResult> Customer(CustomerPhone phone);
     }
 }
