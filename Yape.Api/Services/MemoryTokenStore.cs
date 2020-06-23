@@ -1,19 +1,27 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Distributed;
 using Yape.Sdk;
 
 namespace Yape.Api.Services
 {
     public class MemoryTokenStore : ITokenStore
     {
-        public Task<string> Get()
+        private const string TokenKey = "yape-token";
+        private readonly IDistributedCache _cache;
+
+        public MemoryTokenStore(IDistributedCache cache)
         {
-            throw new NotImplementedException();
+            _cache = cache;
         }
 
-        public Task Save(string token)
+        public async Task<string> Get()
         {
-            throw new NotImplementedException();
+            return await _cache.GetStringAsync(TokenKey);
+        }
+
+        public async Task Save(string token)
+        {
+            await _cache.SetStringAsync(TokenKey, token);
         }
     }
 }
