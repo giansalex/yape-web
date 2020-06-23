@@ -29,7 +29,7 @@ namespace Yape.Api.Controllers
             return await _yape.ListOrders();
         }
 
-        [HttpGet("Customer/{phone:regex(^\\[[9]]d{{8}}$)}")]
+        [HttpGet("Customer/{phone:regex(^[[9]]\\d{{8}}$)}")]
         public async Task<Customer> GetCustomer(string phone)
         {
             return await _yape.GetCustomer(phone);
