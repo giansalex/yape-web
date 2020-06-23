@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Moq;
 using NUnit.Framework;
 using Refit;
 using Yape.Sdk.Entity;
@@ -18,12 +19,16 @@ namespace Yape.Sdk.Tests
         [SetUp]
         public void Setup()
         {
-            var handler = new SecurityHttpClientHandler(() => Task.FromResult(_token))
+            var moq = new Mock<ITokenProvider>();
+            moq.Setup(m => m.GetToken()).ReturnsAsync(() => _token);
+            var handler = new HttpClientHandler
             {
                 CookieContainer = new CookieContainer(), UseCookies = true
             };
             //handler.Proxy = new WebProxy("127.0.0.1", 8888);
-            var client = new HttpClient(handler, true)
+
+            var securityHandler = new SecurityHttpClientHandler(moq.Object, handler);
+            var client = new HttpClient(securityHandler, true)
             {
                 BaseAddress = new Uri("https://yapesec.innovacxionbcp.com")
             };
