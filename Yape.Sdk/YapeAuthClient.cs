@@ -10,6 +10,7 @@ namespace Yape.Sdk
         private readonly IYapeClient _client;
         private readonly IYapeApi _api;
         private readonly IPinResolver _pinResolver;
+        private readonly ITokenStore _store;
         private string[] _pinArray;
         private static DateTime _expire;
 
@@ -21,16 +22,12 @@ namespace Yape.Sdk
             set { _pinArray = value.Select(c => c.ToString()).ToArray(); }
         }
 
-        /// <summary>
-        /// Token used for authenticated paths.
-        /// </summary>
-        public string TokenSaved { get; set; }
-
-        public YapeAuthClient(IYapeClient client, IYapeApi api, IPinResolver pinResolver)
+        public YapeAuthClient(IYapeClient client, IYapeApi api, IPinResolver pinResolver, ITokenStore store)
         {
             _client = client;
             _api = api;
             _pinResolver = pinResolver;
+            _store = store;
         }
 
         public async Task<decimal> GetBalance()
@@ -77,7 +74,8 @@ namespace Yape.Sdk
 
         private async Task VerifyLogin()
         {
-            if (!string.IsNullOrEmpty(TokenSaved) && DateTime.Now < _expire)
+            var token = await _store.Get();
+            if (!string.IsNullOrEmpty(token) && DateTime.Now < _expire)
             {
                 return;
             }
@@ -99,7 +97,8 @@ namespace Yape.Sdk
             if (!login.Success) throw new Exception("Cannot login for user " + Email);
 
             _expire = DateTime.Now.AddSeconds(login.Response.AuthToken.ExpiresIn * 0.8);
-            TokenSaved = login.Response.AuthToken.AccessToken;
+
+            await _store.Save(login.Response.AuthToken.AccessToken);
         }
     }
 }
