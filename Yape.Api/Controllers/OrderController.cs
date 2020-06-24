@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -61,6 +62,7 @@ namespace Yape.Api.Controllers
                 });
             }
 
+            savedOrder.CompleteDate = DateTime.Now;
             savedOrder.State = OrderState.Complete;
             await _repository.Save(code, savedOrder);
 
@@ -80,7 +82,7 @@ namespace Yape.Api.Controllers
             }
 
             var newCode = await generator.GenerateOrderCode();
-
+            intent.Create = DateTime.Now;
             await _repository.Save(newCode, intent);
 
             return Ok(new

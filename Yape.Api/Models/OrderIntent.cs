@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Yape.Api.Models
@@ -13,5 +14,9 @@ namespace Yape.Api.Models
         public string Id { get; set; }
         [BindNever]
         public string State { get; set; }
+        [BindNever]
+        public DateTime Create { get; set; }
+        [BindNever]
+        public DateTime? CompleteDate { get; set; }
     }
 }
