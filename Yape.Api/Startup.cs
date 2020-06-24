@@ -59,6 +59,18 @@ namespace Yape.Api
             {
                 options.Configuration = Configuration["Redis:Connection"];
             });
+
+            var corsOrigin = Configuration["Cors:Origins"];
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "OrdersPolicy",
+                    builder =>
+                    {
+                        builder.WithOrigins(corsOrigin.Split(','))
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                    });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

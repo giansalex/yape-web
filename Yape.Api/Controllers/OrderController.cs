@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Yape.Api.Models;
 using Yape.Api.Repository;
@@ -10,6 +11,7 @@ namespace Yape.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [EnableCors("OrdersPolicy")]
     public class OrderController : ControllerBase
     {
         private readonly IYapeClient _yape;
