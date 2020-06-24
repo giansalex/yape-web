@@ -36,7 +36,7 @@ namespace Yape.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] OrderIntent intent)
+        public async Task<IActionResult> Post([FromBody] PaymentIntent intent)
         {
             if (!ModelState.IsValid)
             {

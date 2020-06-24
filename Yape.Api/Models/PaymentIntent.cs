@@ -2,7 +2,7 @@
 
 namespace Yape.Api.Models
 {
-    public class OrderIntent
+    public class PaymentIntent
     {
         /// <summary>
         /// Phone to pay
