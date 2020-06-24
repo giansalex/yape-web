@@ -4,12 +4,12 @@ using Yape.Sdk;
 
 namespace Yape.Api.Services
 {
-    public class MemoryTokenStore : ITokenStore
+    public class CacheTokenStore : ITokenStore
     {
         private const string TokenKey = "yape-token";
         private readonly IDistributedCache _cache;
 
-        public MemoryTokenStore(IDistributedCache cache)
+        public CacheTokenStore(IDistributedCache cache)
         {
             _cache = cache;
         }

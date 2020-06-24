@@ -29,7 +29,7 @@ namespace Yape.Api
             services.AddControllers();
             services.Configure<YapeSettings>(Configuration.GetSection("Yape"));
             services.AddTransient<IPinResolver, PinEncrypt>();
-            services.AddTransient<ITokenStore, MemoryTokenStore>();
+            services.AddTransient<ITokenStore, CacheTokenStore>();
             services.AddTransient<YapeClient>();
             services.AddTransient<IYapeClient, YapeAuthClient>(s =>
             {
