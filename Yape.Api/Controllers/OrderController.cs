@@ -53,6 +53,14 @@ namespace Yape.Api.Controllers
                 });
             }
 
+            if (payment.Amount != savedOrder.Amount)
+            {
+                return Ok(new
+                {
+                    Error = "Amount payed is invalid!"
+                });
+            }
+
             savedOrder.State = OrderState.Complete;
             await _repository.Save(code, savedOrder);
 
