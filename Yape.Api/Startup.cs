@@ -9,6 +9,7 @@ using Microsoft.Extensions.Options;
 using Polly;
 using Refit;
 using Yape.Api.Models;
+using Yape.Api.Repository;
 using Yape.Api.Services;
 using Yape.Sdk;
 
@@ -30,6 +31,8 @@ namespace Yape.Api
             services.Configure<YapeSettings>(Configuration.GetSection("Yape"));
             services.AddTransient<IPinResolver, PinEncrypt>();
             services.AddTransient<ITokenStore, CacheTokenStore>();
+            services.AddTransient<IOrderRepository, CacheOrderRepository>();
+            services.AddTransient<OrderGenerator>();
             services.AddTransient<YapeClient>();
             services.AddTransient<IYapeClient, YapeAuthClient>(s =>
             {

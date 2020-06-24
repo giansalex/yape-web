@@ -1,12 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Yape.Api.Models;
 using Yape.Api.Repository;
 using Yape.Api.Services;
 using Yape.Sdk;
-using Yape.Sdk.Entity;
 
 namespace Yape.Api.Controllers
 {
