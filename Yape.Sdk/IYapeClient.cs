@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Yape.Sdk.Entity;
 
 namespace Yape.Sdk
@@ -18,5 +19,7 @@ namespace Yape.Sdk
         Task<bool> DeleteOrder(int order);
 
         Task<Customer> GetCustomer(string phone);
+
+        Task<PhoneResult> VerifyContacts(IEnumerable<Contact> contacts);
     }
 }

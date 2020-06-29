@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Yape.Sdk.Entity;
 
 namespace Yape.Sdk
@@ -60,6 +61,13 @@ namespace Yape.Sdk
             {
                 Cashtag = phone
             });
+
+            return result.Success ? result.Response : null;
+        }
+
+        public async Task<PhoneResult> VerifyContacts(IEnumerable<Contact> contacts)
+        {
+            var result = await _api.VerifyContacts(contacts);
 
             return result.Success ? result.Response : null;
         }

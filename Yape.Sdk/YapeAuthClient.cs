@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Yape.Sdk.Entity;
@@ -77,6 +78,13 @@ namespace Yape.Sdk
             await VerifyLogin();
 
             return await _client.GetCustomer(phone);
+        }
+
+        public async Task<PhoneResult> VerifyContacts(IEnumerable<Contact> contacts)
+        {
+            await VerifyLogin();
+
+            return await _client.VerifyContacts(contacts);
         }
 
         private async Task VerifyLogin()
