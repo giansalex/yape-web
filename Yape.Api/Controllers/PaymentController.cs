@@ -96,9 +96,8 @@ namespace Yape.Api.Controllers
             return Ok(new
             {
                 Code = newCode,
-                result.Id,
-                result.CreationTime,
-                result.Status
+                intent.Id,
+                intent.State
             });
         }
 
