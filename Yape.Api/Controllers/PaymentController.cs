@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Yape.Api.Models;
 using Yape.Api.Repository;
@@ -11,6 +12,7 @@ namespace Yape.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [EnableCors("OrdersPolicy")]
     public class PaymentController : ControllerBase
     {
         private readonly IYapeClient _yape;
@@ -74,11 +76,12 @@ namespace Yape.Api.Controllers
                 return Ok(new { Error = "Customer phone not found" });
             }
 
+            var newCode = await generator.GenerateOrderCode();
             var result = await _yape.CreateOrder(new Order
             {
                 CashTag = customer.Cashtag,
                 Amount = intent.Amount.ToString("F2"),
-                Message = $"Paga tu pedido #{new Random().Next(1, 100)} Prueba"
+                Message = $"Paga tu pedido #{newCode} - Prueba"
             });
 
             if (result == null)
@@ -86,12 +89,13 @@ namespace Yape.Api.Controllers
                 return Ok(new { Error = true });
             }
 
-            var newCode = await generator.GenerateOrderCode();
             intent.Create = DateTime.Now;
+            intent.PaymentYapeId = result.Id;
             await _repository.Save(newCode, intent);
 
             return Ok(new
             {
+                Code = newCode,
                 result.Id,
                 result.CreationTime,
                 result.Status
