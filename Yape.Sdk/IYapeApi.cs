@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Refit;
 using Yape.Sdk.Entity;
 
@@ -37,5 +38,8 @@ namespace Yape.Sdk
         [Headers("Authorization: Bearer")]
         [Post("/api-mobile/transfers/targetUserData")]
         Task<CustomerResult> Customer(CustomerPhone phone);
+        [Headers("Authorization: Bearer")]
+        [Post("/api-mobile/contacts")]
+        Task<ContactResult> VerifyContacts(IEnumerable<Contact> contacts);
     }
 }
