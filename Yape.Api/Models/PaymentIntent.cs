@@ -1,9 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Yape.Api.Models
 {
     public class PaymentIntent
     {
+        [Required, EmailAddress]
+        public string Email { get; set; }
         /// <summary>
         /// Phone to pay
         /// </summary>
@@ -15,5 +19,13 @@ namespace Yape.Api.Models
         /// </summary>
         [Range(1.0, 10.0)]
         public decimal Amount { get; set; }
+        [BindNever]
+        public string Id { get; set; }
+        [BindNever]
+        public string State { get; set; }
+        [BindNever]
+        public DateTime Create { get; set; }
+        [BindNever]
+        public DateTime? CompleteDate { get; set; }
     }
 }
