@@ -32,6 +32,7 @@ namespace Yape.Api
             services.AddTransient<IPinResolver, PinEncrypt>();
             services.AddTransient<ITokenStore, CacheTokenStore>();
             services.AddTransient<IOrderRepository, CacheOrderRepository>();
+            services.AddTransient<IPaymentRepository, CachePaymentRepository>();
             services.AddTransient<OrderGenerator>();
             services.AddTransient<YapeClient>();
             services.AddTransient<IYapeClient, YapeAuthClient>(s =>
