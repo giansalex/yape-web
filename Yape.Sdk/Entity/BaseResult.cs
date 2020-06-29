@@ -8,6 +8,6 @@ namespace Yape.Sdk.Entity
         public bool Success { get; set; }
 
         [JsonPropertyName("errors")]
-        public object[] Errors { get; set; }
+        public string[] Errors { get; set; }
     }
 }
