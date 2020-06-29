@@ -41,10 +41,10 @@ namespace Yape.Sdk.Entity
         public decimal Amount { get; set; }
 
         [JsonPropertyName("contactFrom")]
-        public Contact ContactFrom { get; set; }
+        public YapeUser ContactFrom { get; set; }
 
         [JsonPropertyName("contactTo")]
-        public Contact ContactTo { get; set; }
+        public YapeUser ContactTo { get; set; }
 
         [JsonPropertyName("type")]
         public string Type { get; set; }
@@ -62,7 +62,7 @@ namespace Yape.Sdk.Entity
         public string Message { get; set; }
     }
 
-    public partial class Contact
+    public partial class YapeUser
     {
         [JsonPropertyName("displayName")]
         public string DisplayName { get; set; }
