@@ -22,6 +22,8 @@ namespace Yape.Api.Models
         [BindNever]
         public string Id { get; set; }
         [BindNever]
+        public int PaymentYapeId { get; set; }
+        [BindNever]
         public string State { get; set; }
         [BindNever]
         public DateTime Create { get; set; }
