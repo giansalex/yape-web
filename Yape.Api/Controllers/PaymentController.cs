@@ -43,17 +43,18 @@ namespace Yape.Api.Controllers
                 });
             }
 
-            var result = await _yape.GetOrder(savePayment.PaymentYapeId);
-            if (result == null)
+            var result = await _yape.ListOrders();
+            var payment = result?.FirstOrDefault(pay => pay.Id == savePayment.PaymentYapeId);
+            if (payment == null)
             {
                 return Ok(new
                 {
-                    Error = "Payment not found!"
+                    Error = "Payments not found!"
                 });
             }
-            
+ 
             savePayment.CompleteDate = DateTime.Now;
-            savePayment.State = result.Status;
+            savePayment.State = payment.Status;
             await _repository.Save(code, savePayment);
 
             return Ok(new
