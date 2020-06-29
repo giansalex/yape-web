@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -70,16 +71,17 @@ namespace Yape.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var customer = await _yape.GetCustomer(intent.Phone);
-            if (customer == null)
+            var newCode = await generator.GenerateOrderCode();
+
+            var verifyResult = await _yape.VerifyContacts(new []{ new Contact {Name = $"User-{newCode}", Phone = intent.Phone } });
+            if (verifyResult == null || verifyResult.Phones.Length == 0)
             {
                 return Ok(new { Error = "Customer phone not found" });
             }
 
-            var newCode = await generator.GenerateOrderCode();
             var result = await _yape.CreateOrder(new Order
             {
-                CashTag = customer.Cashtag,
+                CashTag = verifyResult.Phones.Single(),
                 Amount = intent.Amount.ToString("F2"),
                 Message = $"Paga tu pedido #{newCode} - Prueba"
             });
