@@ -97,5 +97,41 @@ namespace Yape.Api.Controllers
                 result.Status
             });
         }
+
+        [HttpDelete("{code}")]
+        public async Task<IActionResult> Delete(string code, [FromHeader(Name = "Authorization")] string paymentId)
+        {
+            var savePayment = await _repository.Get(code);
+            if (savePayment == null || savePayment.Id != paymentId)
+            {
+                return NotFound();
+            }
+
+            if (savePayment.State == OrderState.Canceled)
+            {
+                return Ok(new
+                {
+                    Code = code,
+                    savePayment.State
+                });
+            }
+
+            var success = await _yape.DeleteOrder(savePayment.PaymentYapeId);
+            if (!success)
+            {
+                return Ok(new { Result = "Payment cannot delete." });
+            }
+
+            savePayment.CompleteDate = DateTime.Now;
+            savePayment.State = OrderState.Canceled;
+            await _repository.Save(code, savePayment);
+
+            return Ok(new
+            {
+                savePayment.Id,
+                savePayment.CompleteDate,
+                savePayment.State
+            });
+        }
     }
 }
