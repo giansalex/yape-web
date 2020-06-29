@@ -46,8 +46,7 @@ namespace Yape.Api.Controllers
             var customer = await _yape.GetCustomer(intent.Phone);
             if (customer == null)
             {
-                ModelState.AddModelError("Phone", "Customer not found");
-                return BadRequest(ModelState);
+                return Ok(new { Error = "Customer phone not found" });
             }
 
             var result = await _yape.CreateOrder(new Order
