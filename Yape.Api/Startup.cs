@@ -82,8 +82,6 @@ namespace Yape.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
-
             app.UseRouting();
 
             app.UseCors();
